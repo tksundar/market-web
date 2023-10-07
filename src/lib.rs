@@ -1,24 +1,21 @@
+use std::{env, fs};
 use std::collections::{HashMap, VecDeque};
-use std::fs;
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::str::FromStr;
 use std::sync::Mutex;
 
 use log::Log;
-use rocket::FromForm;
-use rocket::http::Status;
-use rocket::response::content::RawHtml;
-use serde::{Deserialize, Serialize};
-use serde_json::{from_str, to_string};
-
-use matching_engine::common::utils;
-use matching_engine::common::utils::{log, Sigma};
+use matching_engine::common::utils::Sigma;
 use matching_engine::matchers::fifo_matcher::FIFOMatcher;
 use matching_engine::matchers::matcher::Matcher;
 use matching_engine::matchers::prorata_matcher::ProrataMatcher;
-use matching_engine::model::domain::{Fill, OrderBook, OrderBookKey, OrderSingle};
+use matching_engine::model::domain::{OrderBook, OrderBookKey, OrderSingle};
 use matching_engine::model::domain::Side::{Buy, Sell};
+use rocket::FromForm;
+use rocket::http::Status;
+use serde::{Deserialize, Serialize};
+use serde_json::{from_str, to_string};
 
 pub static LOG_FILE: &str = "web/logs/web.log";
 const ORDER_BOOK_FILE: &str = "orderbook.json";
@@ -171,7 +168,11 @@ pub fn persist_order_book(ob: &OB) {
 
 
 ///Returns the appropriate [`Matcher`] implementation based on the supplied algo parameter
-pub fn get_matcher(algo:&String) -> Box<dyn Matcher>{
+pub fn get_matcher() -> Box<dyn Matcher>{
+    let algo = match env::var("ALGO") {
+        Ok(algo) => algo,
+        Err(_) => "FIFO".to_string()
+    };
 
     if algo == "FIFO" {
         Box::new(FIFOMatcher)
@@ -184,10 +185,10 @@ pub fn get_matcher(algo:&String) -> Box<dyn Matcher>{
 
 #[cfg(test)]
 mod tests {
-    use serde_json::{from_str, to_string};
     use matching_engine::common::utils::create_order_book;
     use matching_engine::common::utils::read_input;
     use matching_engine::model::domain::Side::{Buy, Sell};
+    use serde_json::{from_str, to_string};
 
     use crate::OB;
 

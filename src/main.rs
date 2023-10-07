@@ -1,9 +1,8 @@
 #[macro_use]
 extern crate rocket;
 
-
-use std::env;
 use matching_engine::common::utils::create_order_from_string;
+use matching_engine::matchers::matcher::Matcher;
 use matching_engine::model::domain::{Fill, OrderSingle, OrderType, Side};
 use rocket::*;
 use rocket::data::ByteUnit;
@@ -11,14 +10,16 @@ use rocket::form::Form;
 use rocket::fs::FileServer;
 use rocket::get;
 use rocket::http::Status;
+use rocket::response::content::RawHtml;
 use serde_json::to_string;
-use market_web::{  get_matcher, get_order_book_from_file, OB, Order, persist_order_book};
 
+use market_web::{get_matcher, get_order_book_from_file, OB, Order, persist_order_book};
 
 #[get("/")]
-fn index() -> &'static str {
+fn index() -> RawHtml<String> {
 
-    "Please fill the form"
+    let content = std::fs::read_to_string("static/main.html").unwrap();
+    RawHtml(content)
 }
 
 #[get("/order_book/<format>")]
@@ -26,7 +27,7 @@ fn index() -> &'static str {
 fn get_order_book(format: &str) -> String{
     debug!("Order Book requested");
     let mut order_book = get_order_book_from_file(None);
-    let mut matcher = get_matcher(&"FIFO".to_string());
+    let mut matcher = get_matcher();
     let fills =  matcher.match_order_book(&mut order_book);
     let ob: OB = OB::from(&order_book);
     let mut res = String::new();
@@ -60,13 +61,10 @@ fn add_order(order_form: Form<Order> ) -> Result<String, Status> {
                                         OrderType::from(order.order_type()),
                                         order.cl_ord_id().clone());
 
-    let algo = match env::var("ALGO") {
-        Ok(algo) => algo,
-        Err(_) => "FIFO".to_string()
-    };
-    let mut matcher = get_matcher(&algo);
+    let mut matcher = get_matcher();
     let mut order_book = get_order_book_from_file(Some(order_single));
     let fills = matcher.match_order_book(&mut order_book);
+
     let mut fill_str = to_string(&fills).unwrap();
     if order.format() == "pretty" {
         fill_str = Fill::pretty_print(&fills);
@@ -102,11 +100,8 @@ async fn upload<'a>(data: Data<'a>) -> Result<String, Status> {
         let order = create_order_from_string(line.to_string());
         order_book.add_order_to_order_book(order);
     }
-    let algo = match env::var("ALGO") {
-        Ok(algo) => algo,
-        Err(_) => "FIFO".to_string()
-    };
-    let mut matcher = get_matcher(&algo);
+
+    let mut matcher = get_matcher();
     let fills = matcher.match_order_book(&mut order_book);
     let mut res = String::new();
     res.push_str(Fill::pretty_print(&fills).as_str());
@@ -136,5 +131,7 @@ fn rocket() -> _ {
         mount("/", routes![index,add_order,get_order_book,reset,upload]).
         mount("/", FileServer::from("static/"))
 }
+
+
 
 
