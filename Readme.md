@@ -5,7 +5,7 @@ institute web site</a></p>
 
 Market web is a stand alone web server that you can start on your desktop/laptop that runs Windows 10 or higher. You
 will need to install cargo setup to run the application using cargo.
-Alternately, you can download the <a href = "https://github.com/tksundar/market-web/raw/bin/market-web.exe">market-web.exe</a> from the app's repository
+Alternately, you can download the <a href = "https://github.com/tksundar/market-web/tree/master/bin/market-web.exe">market-web.exe</a> from the app's repository
 
 Here is a sample scree grab of the landing page of the app
 
