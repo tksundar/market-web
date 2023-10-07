@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Order Entry</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        html, body, h2 {
+            height: 75%;
+            width: 75%;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <p></p>
+    <form action="/order_entry" class="form-horizontal" method="post">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="cl_ord_id">Order Id:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="cl_ord_id" placeholder="client order id" name="cl_ord_id">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="symbol">Symbol:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="symbol" placeholder="Symbol" name="symbol">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="qty">Quantity:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="qty" placeholder="Quantity" name="qty">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="price">Price:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="price" placeholder="Price" name="price">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="side">Side:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="side" placeholder="Buy" name="side" value="Buy">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="order_type">Type:</label>
+            <div class="col-sm-3">
+                <input class="form-control" id="order_type" name="order_type" placeholder="Limit" type="text"
+                       value="Limit">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="order_type">Response Format:</label>
+            <div class="form-check">
+                <input class="form-check-input" id="format_json" name="format" type="radio" value="json">
+                <label class="form-check-label" for="format_json"></label>json
+            </div>
+            <div class="form-check">
+                <input checked class="form-check-input" id="format_pretty" name="format" type="radio" value="pretty">
+                <label class="form-check-label" for="format_pretty">
+                    pretty
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

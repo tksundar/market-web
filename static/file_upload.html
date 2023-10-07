@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #e0e0e0;
+        }
+
+        .upload-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .upload-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>File Upload Form</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Select a file:</label>
+            <label class="custom-file-upload">
+                <input type="file" id="file" name="file" onchange="updateFileName(this)">
+                Browse...
+            </label>
+            </p>
+            <div>
+            <span id="file-name"></span>
+            </div>
+        </div>
+        <input type="submit" class="upload-button" value="Upload File">
+    </form>
+</div>
+<script>
+    function updateFileName(input) {
+        const fileNameSpan = document.getElementById("file-name");
+        if (input.files.length > 0) {
+            fileNameSpan.textContent = "Selected file: " + input.files[0].name;
+        } else {
+            fileNameSpan.textContent = "";
+        }
+    }
+</script>
+</body>
+
+</html>

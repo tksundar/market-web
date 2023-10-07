@@ -1,0 +1,17 @@
+[package]
+name = "market-web"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+rocket = { version = "0.5.0-rc.3" }
+
+#rocket_contrib = {version = "0.4.11" , features = ["handlebars_templates"] }
+serde = { version = "1.0.188", features = ["derive"] }
+serde_json = "1.0.107"
+chrono = "0.4"
+log = { version = "0.4.20", features = [] }
+matching_engine = "0.1.6"
